@@ -12,10 +12,10 @@ dotnet run -c Release
 
 Программа принимает параметры через командную строку:
 
---CityDistrict - район для фильтрации заказов.
---FirstDeliveryDateTime - время первого заказа (в формате yyyy-MM-dd HH:mm:ss).
---DeliveryLog - путь к файлу логов.
---DeliveryOrder - путь к файлу с отфильтрованными заказами.
+- --CityDistrict - район для фильтрации заказов.
+- --FirstDeliveryDateTime - время первого заказа (в формате yyyy-MM-dd HH:mm:ss).
+- --DeliveryLog - путь к файлу логов.
+- --DeliveryOrder - путь к файлу с отфильтрованными заказами.
 
 ### Переменные также могут быть заданы через среду
 
