@@ -6,7 +6,7 @@ using NLog.Layouts;
 
 namespace DeliveryTracker;
 
-public class Program
+public static class Program
 {
     private const string LoggerLayoutText =
         "${longdate}|${level}|${logger}|${threadid}|${message:withexception=true}";

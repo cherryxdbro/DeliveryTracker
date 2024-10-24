@@ -1,8 +1,8 @@
 ﻿namespace DeliveryTracker;
 
-public static class OrderFileHandler
+internal static class OrderFileHandler
 {
-    public static IEnumerable<Order> LoadOrdersFromFileCSV(string filePath)
+    internal static IEnumerable<Order> LoadOrdersFromFileCSV(string filePath)
     {
         List<Order> orders = [];
         try
@@ -22,7 +22,7 @@ public static class OrderFileHandler
         return orders;
     }
 
-    public static void SaveOrdersToFileCSV(IEnumerable<Order> orders, string filePath)
+    internal static void SaveOrdersToFileCSV(IEnumerable<Order> orders, string filePath)
     {
         try
         {

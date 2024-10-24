@@ -1,8 +1,8 @@
 ﻿namespace DeliveryTracker;
 
-internal class OrderFilter
+internal static class OrderFilter
 {
-    public static IEnumerable<Order> FilterOrders(
+    internal static IEnumerable<Order> FilterOrders(
         IEnumerable<Order> orders,
         string cityDistrict,
         DateTime firstDeliveryDateTime
