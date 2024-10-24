@@ -1,5 +1,5 @@
 using System.Globalization;
-using CommandLine;
+using Microsoft.Extensions.Configuration;
 using NLog;
 using NLog.Config;
 using NLog.Layouts;
@@ -13,21 +13,18 @@ public class Program
 
     private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-    public static async Task Main(string[] arguments)
+    public static void Main(string[] arguments)
     {
-        ParserResult<Arguments> parserResult = Parser
-            .Default.ParseArguments<Arguments>(args: arguments)
-            .WithParsed(action: RunWithOptions)
-            .WithNotParsed(action: HandleErrors);
-    }
+        IConfigurationRoot configuration = new ConfigurationBuilder()
+            .AddJsonFile(path: "appsettings.json", optional: true, reloadOnChange: true)
+            .AddEnvironmentVariables()
+            .AddCommandLine(args: arguments)
+            .Build();
 
-    private static void RunWithOptions(Arguments arguments)
-    {
-        SetupLogging(logFilePath: arguments.DeliveryLog);
-
+        string cityDistrict = configuration[key: "CityDistrict"] ?? "";
         if (
             !DateTime.TryParseExact(
-                s: arguments.FirstDeliveryDateTime,
+                s: configuration[key: "FirstDeliveryDateTime"],
                 format: "yyyy-MM-dd HH:mm:ss",
                 provider: CultureInfo.InvariantCulture,
                 style: DateTimeStyles.None,
@@ -35,9 +32,12 @@ public class Program
             )
         )
         {
-            logger.Error(message: "Invalid date format");
-            return;
+            firstDeliveryDateTime = DateTime.UtcNow.AddMinutes(value: -30);
         }
+        string deliveryLog = configuration[key: "DeliveryLog"] ?? "delivery_tracker.log";
+        string deliveryOrder = configuration[key: "DeliveryOrder"] ?? "filtered_orders.csv";
+
+        SetupLogging(logFilePath: deliveryLog);
 
         try
         {
@@ -49,18 +49,12 @@ public class Program
             logger.Info(message: "Filtering orders...");
             IEnumerable<Order> filteredOrders = OrderFilter.FilterOrders(
                 orders: orders,
-                cityDistrict: arguments.CityDistrict,
+                cityDistrict: cityDistrict,
                 firstDeliveryDateTime: firstDeliveryDateTime
             );
 
-            logger.Info(
-                message: "Saving filtered orders to {}...",
-                argument: arguments.DeliveryOrder
-            );
-            OrderFileHandler.SaveOrdersToFileCSV(
-                orders: filteredOrders,
-                filePath: arguments.DeliveryOrder
-            );
+            logger.Info(message: "Saving filtered orders to {}...", argument: deliveryOrder);
+            OrderFileHandler.SaveOrdersToFileCSV(orders: filteredOrders, filePath: deliveryOrder);
 
             logger.Info(message: "Operations completed successfully");
         }
@@ -71,14 +65,6 @@ public class Program
         finally
         {
             LogManager.Shutdown();
-        }
-    }
-
-    private static void HandleErrors(IEnumerable<Error> errors)
-    {
-        foreach (Error error in errors)
-        {
-            Console.WriteLine(value: error.ToString());
         }
     }
 

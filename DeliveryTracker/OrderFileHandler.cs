@@ -1,6 +1,4 @@
-﻿using NLog;
-
-namespace DeliveryTracker;
+﻿namespace DeliveryTracker;
 
 public static class OrderFileHandler
 {
