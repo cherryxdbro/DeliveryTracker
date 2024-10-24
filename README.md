@@ -1,26 +1,38 @@
 # DeliveryTracker
 
-## Описание
-
-Приложение фильтрует заказы службы доставки в зависимости от района города и времени заказа, предоставляя результат в формате CSV.
-
 ## Установка и настройка
 
-1. Скачайте проект и соберите его:
-dotnet build
+1. Склонируйте репозиторий, или скачайте архив проекта
+2. Убедитесь, что у вас установлен .NET 9.0
+3. В командной строке выполните следующую команду для запуска приложения:
 
-2. Настройте параметры через командную строку или через файл конфигурации:
-Командная строка:
-DeliveryTracker.exe -d "District1" -t "2024-10-23 14:00:00" -l "log.txt" -o "output.csv"
+```bash
+dotnet run -c Release
+```
 
-Файл конфигурации "appsettings.json":
+Программа принимает параметры через командную строку:
+
+--CityDistrict - район для фильтрации заказов.
+--FirstDeliveryDateTime - время первого заказа (в формате yyyy-MM-dd HH:mm:ss).
+--DeliveryLog - путь к файлу логов.
+--DeliveryOrder - путь к файлу с отфильтрованными заказами.
+
+### Дополнительно параметры могут быть заданы через файл конфигурации "appsettings.json"
+
+```text
 {
-    "CityDistrict": "861136c7-67fa-496a-81e6-dbd54df14533",
-    "FirstDeliveryDateTime": "2024-10-22 09:45:00",
-    "DeliveryLog": "delivery_tracker.log",
-    "DeliveryOrder": "filtered_orders.csv"
+  "CityDistrict": "value",
+  "FirstDeliveryDateTime": "value",
+  "DeliveryLog": "value",
+  "DeliveryOrder": "value"
 }
+```
 
-## Запуск программы
+### Переменные также могут быть заданы через среду
 
-dotnet run -- --cityDistrict District1 --firstDeliveryDateTime "2024-10-23 14:00:00" --deliveryLog "log.txt" --deliveryOrder "output.csv"
+```bash
+export CityDistrict="value"
+export FirstDeliveryDateTime="value"
+export DeliveryLog="value"
+export DeliveryOrder="value"
+```
