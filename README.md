@@ -17,22 +17,22 @@ dotnet run -c Release
 --DeliveryLog - путь к файлу логов.
 --DeliveryOrder - путь к файлу с отфильтрованными заказами.
 
+### Переменные также могут быть заданы через среду
+
+```bash
+export CityDistrict=""
+export FirstDeliveryDateTime=""
+export DeliveryLog=""
+export DeliveryOrder=""
+```
+
 ### Дополнительно параметры могут быть заданы через файл конфигурации "appsettings.json"
 
 ```text
 {
-  "CityDistrict": "value",
-  "FirstDeliveryDateTime": "value",
-  "DeliveryLog": "value",
-  "DeliveryOrder": "value"
+  "CityDistrict": "",
+  "FirstDeliveryDateTime": "",
+  "DeliveryLog": "",
+  "DeliveryOrder": ""
 }
-```
-
-### Переменные также могут быть заданы через среду
-
-```bash
-export CityDistrict="value"
-export FirstDeliveryDateTime="value"
-export DeliveryLog="value"
-export DeliveryOrder="value"
 ```
