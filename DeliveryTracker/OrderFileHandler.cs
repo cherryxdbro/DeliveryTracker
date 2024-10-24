@@ -27,6 +27,8 @@ public static class OrderFileHandler
         try
         {
             using StreamWriter writer = new(path: filePath);
+
+            writer.WriteLine(value: $"OrderId,Weight,CityDistrict,DeliveryDateTime");
             foreach (Order order in orders)
             {
                 writer.WriteLine(
