@@ -1,10 +1,16 @@
 ﻿namespace DeliveryTracker;
 
-internal static class OrderFileHandler
+public static class OrderFileHandler
 {
-    internal static IEnumerable<Order> LoadOrdersFromFileCSV(string filePath)
+    public static IEnumerable<Order> LoadOrdersFromFileCSV(string filePath)
     {
         List<Order> orders = [];
+
+        if (!File.Exists(path: filePath))
+        {
+            return orders;
+        }
+
         try
         {
             foreach (string line in File.ReadLines(path: filePath))
@@ -19,16 +25,18 @@ internal static class OrderFileHandler
         {
             throw new IOException(message: "Error reading orders file", innerException: exception);
         }
+
         return orders;
     }
 
-    internal static void SaveOrdersToFileCSV(IEnumerable<Order> orders, string filePath)
+    public static void SaveOrdersToFileCSV(IEnumerable<Order> orders, string filePath)
     {
         try
         {
             using StreamWriter writer = new(path: filePath);
 
-            writer.WriteLine(value: $"OrderId,Weight,CityDistrict,DeliveryDateTime");
+            writer.WriteLine(value: "OrderId,Weight,CityDistrict,DeliveryDateTime");
+
             foreach (Order order in orders)
             {
                 writer.WriteLine(

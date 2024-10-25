@@ -21,7 +21,15 @@ public static class Program
             .AddCommandLine(args: arguments)
             .Build();
 
-        string cityDistrict = configuration[key: "CityDistrict"] ?? "";
+        if (
+            !Guid.TryParseExact(
+                input: configuration[key: "CityDistrict"],
+                format: null,
+                result: out Guid cityDistrict
+            )
+        )
+            Console.WriteLine("CityDistrict invalid");
+
         if (
             !DateTime.TryParseExact(
                 s: configuration[key: "FirstDeliveryDateTime"],
@@ -31,9 +39,8 @@ public static class Program
                 result: out DateTime firstDeliveryDateTime
             )
         )
-        {
-            firstDeliveryDateTime = DateTime.UtcNow.AddMinutes(value: -30);
-        }
+            Console.WriteLine("FirstDeliveryDateTime invalid");
+
         string deliveryLog = configuration[key: "DeliveryLog"] ?? "delivery_tracker.log";
         string deliveryOrder = configuration[key: "DeliveryOrder"] ?? "filtered_orders.csv";
 
