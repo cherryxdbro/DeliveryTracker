@@ -48,11 +48,33 @@ public static class Program
 
         try
         {
-            logger.Info(message: "Loading orders from \"orders.csv\"...");
-            IEnumerable<Order> orders = OrderFileHandler.LoadOrdersFromFileCSV(
-                filePath: "orders.csv"
+            ProcessOrders(
+                cityDistrict: cityDistrict,
+                firstDeliveryDateTime: firstDeliveryDateTime,
+                deliveryOrder: deliveryOrder
             );
+        }
+        catch (Exception exception)
+        {
+            logger.Error(exception: exception, message: "An error occurred during the process");
+        }
+        finally
+        {
+            LogManager.Shutdown();
+        }
+    }
 
+    private static void ProcessOrders(
+        Guid cityDistrict,
+        DateTime firstDeliveryDateTime,
+        string deliveryOrder
+    )
+    {
+        logger.Info(message: "Loading orders from \"orders.csv\"...");
+        IEnumerable<Order> orders = OrderFileHandler.LoadOrdersFromFileCSV(filePath: "orders.csv");
+
+        if (orders.Any())
+        {
             logger.Info(message: "Filtering orders...");
             IEnumerable<Order> filteredOrders = OrderFilter.FilterOrders(
                 orders: orders,
@@ -65,14 +87,8 @@ public static class Program
 
             logger.Info(message: "Operations completed successfully");
         }
-        catch (Exception exception)
-        {
-            logger.Error(exception: exception, message: "An error occurred during the process");
-        }
-        finally
-        {
-            LogManager.Shutdown();
-        }
+
+        logger.Info(message: "No items found...");
     }
 
     private static void SetupLogging(string logFilePath)
