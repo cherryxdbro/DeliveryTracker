@@ -82,7 +82,7 @@ public static class Program
                 firstDeliveryDateTime: firstDeliveryDateTime
             );
 
-            logger.Info(message: "Saving filtered orders to {}...", argument: deliveryOrder);
+            logger.Info(message: "Saving filtered orders to \"{}\"...", argument: deliveryOrder);
             OrderFileHandler.SaveOrdersToFileCSV(orders: filteredOrders, filePath: deliveryOrder);
 
             logger.Info(message: "Operations completed successfully");
