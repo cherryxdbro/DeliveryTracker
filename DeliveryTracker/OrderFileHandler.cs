@@ -13,7 +13,7 @@ public static class OrderFileHandler
 
         if (!File.Exists(path: filePath))
         {
-            logger.Warn(message: "File {} is not exist", argument: filePath);
+            logger.Warn(message: "File \"{}\" is not exist", argument: filePath);
             return orders;
         }
 

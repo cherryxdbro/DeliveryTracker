@@ -67,8 +67,8 @@ public class OrderFileHandlerTests
         OrderFileHandler.SaveOrdersToFileCSV(orders: orders, filePath: "output_orders.csv");
 
         // Assert
-        string[] savedOrders = File.ReadAllLines("output_orders.csv");
-        Assert.Equal(3, savedOrders.Length);
-        Assert.Contains("OrderId,Weight,CityDistrict,DeliveryDateTime", savedOrders[0]);
+        string[] savedOrders = File.ReadAllLines(path: "output_orders.csv");
+        Assert.Equal(expected: 3, actual: savedOrders.Length);
+        Assert.Contains(expectedSubstring: "OrderId,Weight,CityDistrict,DeliveryDateTime", actualString: savedOrders[0]);
     }
 }
