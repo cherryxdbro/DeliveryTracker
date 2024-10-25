@@ -1,13 +1,19 @@
-﻿namespace DeliveryTracker;
+﻿using System.Globalization;
+using NLog;
+
+namespace DeliveryTracker;
 
 public static class OrderFileHandler
 {
+    private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
     public static IEnumerable<Order> LoadOrdersFromFileCSV(string filePath)
     {
         List<Order> orders = [];
 
         if (!File.Exists(path: filePath))
         {
+            logger.Warn(message: "File {} is not exist", argument: filePath);
             return orders;
         }
 
@@ -40,7 +46,7 @@ public static class OrderFileHandler
             foreach (Order order in orders)
             {
                 writer.WriteLine(
-                    value: $"{order.Id},{order.Weight},{order.CityDistrict},{order.DeliveryDateTime:yyyy-MM-dd HH:mm:ss}"
+                    value: $"{order.Id},{order.Weight.ToString(CultureInfo.InvariantCulture)},{order.CityDistrict},{order.DeliveryDateTime:yyyy-MM-dd HH:mm:ss}"
                 );
             }
         }

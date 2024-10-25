@@ -24,7 +24,7 @@ public static class Program
         if (
             !Guid.TryParseExact(
                 input: configuration[key: "CityDistrict"],
-                format: null,
+                format: "D",
                 result: out Guid cityDistrict
             )
         )
